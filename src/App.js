@@ -10,18 +10,46 @@ class App extends Component {
       contacts: []
     };
   }
-  deleteItem = key => {
-    const filteredItems = this.state.items.filter(item => {
-      return item.key !== key;
-    });
-    this.setState({
-      items: filteredItems
-    });
-  };
+  deleteMember(member) {
+    var data = {
+      id: member.id
+    };
+    console.log(data);
+    fetch("https://untitled-2pnbnmu167mj.runkit.sh/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(function(response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        if (data === "success") {
+          this.setState({ msg: "User has been deleted." });
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  editMember(member) {
+    var data = {
+      id: member.id,
+      first_name: member.first_name,
+      last_name: member.last_name,
+      phone: member.phone,
+      email: member.email
+    };
+    console.log(data);
+  }
 
   componentDidMount() {
     let self = this;
-    fetch("https://book-address1-skwd0atqwzox.runkit.sh/contacts/all", {
+    fetch("https://untitled-2pnbnmu167mj.runkit.sh/contacts/all", {
       method: "GET"
     })
       .then(function(response) {
@@ -56,13 +84,14 @@ class App extends Component {
             </thead>
             <tbody>
               {this.state.contacts.map(member => (
-                <tr key={member.first_name}>
+                <tr key={member.id}>
                   <td>{member.first_name} </td>
                   <td>{member.last_name}</td>
                   <td>{member.email}</td>
                   <td>{member.phone}</td>
                   <td>
-                    <a>Edit</a>|<a>Delete</a>
+                    <a onClick={() => this.editMember(member)}>Edit</a>
+                    <a onClick={() => this.deleteMember(member)}>Delete</a>
                   </td>
                 </tr>
               ))}

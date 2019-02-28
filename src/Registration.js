@@ -17,7 +17,7 @@ class Registrarion extends Component {
 
   addItem = e => {
     e.preventDefault();
-    fetch("https://book-address1-skwd0atqwzox.runkit.sh/new", {
+    fetch("https://untitled-2pnbnmu167mj.runkit.sh/new", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state.form)
