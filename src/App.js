@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import bootstrap from "bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { Form, Button } from "react-bootstrap";
 
 class App extends Component {
   inputElement = React.createRef();
@@ -83,7 +84,7 @@ class App extends Component {
 
   componentDidMount() {
     let self = this;
-    fetch("https://test4-vv6e1xcajcg8.runkit.sh/contacts/all", {
+    fetch("https://test5-8gpsotfpg67s.runkit.sh/contacts/all", {
       method: "GET"
     })
       .then(function(response) {
@@ -135,78 +136,93 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="todoListMain">
-          <div className="header">
-            <form onSubmit={this.state.create ? this.addItem : this.editMember}>
-              <input type="hidden" name="id" value={this.state.form.id} />
-              <input
-                placeholder="First Name"
-                onChange={this.handleChange}
-                name="first_name"
-                className="form-control"
-                value={this.state.form.first_name}
-              />
-              <input
-                placeholder="Last Name"
-                onChange={this.handleChange}
-                name="last_name"
-                className="form-control"
-                value={this.state.form.last_name}
-              />
-              <input
-                placeholder="Phone"
-                onChange={this.handleChange}
-                name="phone"
-                className="form-control"
-                value={this.state.form.phone}
-              />
-              <input
-                placeholder="Email"
-                onChange={this.handleChange}
-                name="email"
-                className="form-control"
-                value={this.state.form.email}
-              />
-              <button type="submit"> Submit </button>
-            </form>
-          </div>
-        </div>
-        <div className="panel panel-default p50 uth-panel">
-          <table className="table table-striped table-dark">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>EMail</th>
-                <th>Phone</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.contacts.map(member => (
-                <tr key={member.id}>
-                  <td>{member.first_name} </td>
-                  <td>{member.last_name}</td>
-                  <td>{member.email}</td>
-                  <td>{member.phone}</td>
-                  <td>
+        <Form onSubmit={this.state.create ? this.addItem : this.editMember}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>First Name</Form.Label>
+            <Form.Control
+              onChange={this.handleChange}
+              name="first_name"
+              className="form-control"
+              minLength={3}
+              required
+              placeholder="Enter First Name"
+              value={this.state.form.first_name}
+            />
+          </Form.Group>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control
+              placeholder="Enter Last Name"
+              onChange={this.handleChange}
+              name="last_name"
+              className="form-control"
+              required
+              minLength={3}
+              value={this.state.form.last_name}
+            />
+          </Form.Group>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              placeholder="Enter Phone"
+              onChange={this.handleChange}
+              name="phone"
+              type="text"
+              className="form-control"
+              maxlength={10}
+              value={this.state.form.phone}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              placeholder="Enter Email"
+              onChange={this.handleChange}
+              name="email"
+              type="email"
+              className="form-control"
+              value={this.state.form.email}
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+
+        <table className="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>EMail</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.contacts.map(member => (
+              <tr key={member.id}>
+                <td>{member.first_name} </td>
+                <td>{member.last_name}</td>
+                <td>{member.email}</td>
+                <td>{member.phone}</td>
+                <td>
+                  <Button variant="primary">
                     <a onClick={() => this.handleEdit(member)}>Edit</a>
+                  </Button>
+                  <Button variant="danger">
                     <a onClick={() => this.deleteMember(member)}>Delete</a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }
 }
-/*<TodoList
-          addItem={this.addItem}
-          inputElement={this.inputElement}
-          handleInput={this.handleInput}
-          currentItem={this.state.currentItem}
-        /><TodoItems entries={this.state.items} deleteItem={this.deleteItem} />*/
 
 export default App;
