@@ -73,7 +73,7 @@ class App extends Component {
 
   editItem = e => {
     e.preventDefault();
-    this.fechRequests("delete", "POST", this.state.form);
+    this.fechRequests("edit", "POST", this.state.form);
   };
 
   addItem = e => {
