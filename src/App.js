@@ -19,13 +19,10 @@ class App extends Component {
       create: true
     };
   }
-  deleteMember(member) {
-    var data = {
-      id: member.id
-    };
-    console.log(data);
-    fetch("hhttps://test4-vv6e1xcajcg8.runkit.sh/delete", {
-      method: "POST",
+
+  fechRequests(path, method, data) {
+    fetch("https://test5-8gpsotfpg67s.runkit.sh/" + path, {
+      method: method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
@@ -36,12 +33,14 @@ class App extends Component {
         return response.json();
       })
       .then(function(data) {
-        if (data === "success") {
-          this.setState({ msg: "User has been deleted." });
+        console.log(data);
+        if (data.affectedRows == "1") {
+          alert("The operation has been completed successfully");
+          window.location.reload();
         }
       })
       .catch(function(err) {
-        console.log(err);
+        console.log("error", err);
       });
   }
 
@@ -58,28 +57,28 @@ class App extends Component {
     });
   }
 
-  editMember = e => {
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      form: { ...this.state.form, [name]: value }
+    });
+  };
+
+  deleteItem(member) {
+    var data = {
+      id: member.id
+    };
+    this.fechRequests("delete", "POST", data);
+  }
+
+  editItem = e => {
     e.preventDefault();
-    fetch("https://test4-vv6e1xcajcg8.runkit.sh/edit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.state.form)
-    })
-      .then(function(response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then(function(data) {
-        console.log(data);
-        if (data == "success") {
-          this.setState({ msg: "Thanks for registering" });
-        }
-      })
-      .catch(function(err) {
-        console.log("error", err);
-      });
+    this.fechRequests("delete", "POST", this.state.form);
+  };
+
+  addItem = e => {
+    e.preventDefault();
+    this.fechRequests("new", "POST", this.state.form);
   };
 
   componentDidMount() {
@@ -102,41 +101,10 @@ class App extends Component {
       });
   }
 
-  addItem = e => {
-    e.preventDefault();
-    fetch("https://test4-vv6e1xcajcg8.runkit.sh/new", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.state.form)
-    })
-      .then(function(response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then(function(data) {
-        console.log(data);
-        if (data == "success") {
-          this.setState({ msg: "Thanks for registering" });
-        }
-      })
-      .catch(function(err) {
-        console.log("error", err);
-      });
-  };
-
-  handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      form: { ...this.state.form, [name]: value }
-    });
-  };
-
   render() {
     return (
       <div className="App">
-        <Form onSubmit={this.state.create ? this.addItem : this.editMember}>
+        <Form onSubmit={this.state.create ? this.addItem : this.editItem}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>First Name</Form.Label>
             <Form.Control
@@ -213,7 +181,7 @@ class App extends Component {
                     <a onClick={() => this.handleEdit(member)}>Edit</a>
                   </Button>
                   <Button variant="danger">
-                    <a onClick={() => this.deleteMember(member)}>Delete</a>
+                    <a onClick={() => this.deleteItem(member)}>Delete</a>
                   </Button>
                 </td>
               </tr>
