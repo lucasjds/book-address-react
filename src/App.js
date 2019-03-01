@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   fechRequests(path, method, data) {
-    fetch("https://test5-8gpsotfpg67s.runkit.sh/" + path, {
+    fetch("https://address-book-back-end-ncjv5w7i8jvi.runkit.sh/" + path, {
       method: method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -83,7 +83,7 @@ class App extends Component {
 
   componentDidMount() {
     let self = this;
-    fetch("https://test5-8gpsotfpg67s.runkit.sh/contacts/all", {
+    fetch("https://address-book-back-end-ncjv5w7i8jvi.runkit.sh/contacts/all", {
       method: "GET"
     })
       .then(function(response) {
