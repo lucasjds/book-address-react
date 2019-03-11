@@ -7,6 +7,7 @@ class App extends Component {
   inputElement = React.createRef();
   constructor() {
     super();
+    //define a dataset
     this.state = {
       contacts: [],
       form: {
@@ -19,7 +20,7 @@ class App extends Component {
       create: true
     };
   }
-
+  //generic function to fetch data or post it
   fechRequests(path, method, data) {
     fetch("https://address-book-back-end-ncjv5w7i8jvi.runkit.sh/" + path, {
       method: method,
@@ -43,7 +44,7 @@ class App extends Component {
         console.log("error", err);
       });
   }
-
+  //when clicking on Edit this fills the form out to be edited.
   handleEdit(member) {
     this.setState({
       form: {
@@ -56,31 +57,31 @@ class App extends Component {
       create: false
     });
   }
-
+  //it is called when typing
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({
       form: { ...this.state.form, [name]: value }
     });
   };
-
+  //when clicking on delete
   deleteItem(member) {
     var data = {
       id: member.id
     };
     this.fechRequests("delete", "POST", data);
   }
-
+  //when clicking on Submit
   editItem = e => {
     e.preventDefault();
     this.fechRequests("edit", "POST", this.state.form);
   };
-
+  //when clicing on Add
   addItem = e => {
     e.preventDefault();
     this.fechRequests("new", "POST", this.state.form);
   };
-
+  //always call it to fetch everything
   componentDidMount() {
     let self = this;
     fetch("https://address-book-back-end-ncjv5w7i8jvi.runkit.sh/contacts/all", {
